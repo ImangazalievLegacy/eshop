@@ -104,9 +104,22 @@ Route::filter('admin.auth', function ()
 	
 	if (Auth::user()->role != 1) // 1 - admin
 	{
-
 		return Redirect::guest( URL::route('home') )->with('global', 'Only for administrators');
+	}
 
+});
+
+/*
+| Проверяет, закрыт сайт или нет
+|
+*/
+
+Route::filter('opened', function ()
+{
+
+	if (!Config::get('site.opened'))
+	{
+		return View::make('themes.default.closed');
 	}
 
 });

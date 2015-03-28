@@ -9,6 +9,8 @@ Route::pattern('hex', '[a-f0-9]+');
 Route::pattern('string', '[a-zA-Z0-9]+');
 Route::pattern('username', '[a-f0-9]+');
 
+Route::when('*', 'opened', ['get', 'post', 'put', 'patch', 'delete']);
+
 /*
 * Обработчик ошибки 404
 */
