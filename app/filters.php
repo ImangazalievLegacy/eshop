@@ -88,3 +88,25 @@ Route::filter('csrf', function()
 		throw new Illuminate\Session\TokenMismatchException;
 	}
 });
+
+/*
+| Проверяет, является ли пользователь администратором
+|
+*/
+
+Route::filter('admin.auth', function ()
+{
+
+	if (Auth::guest())
+	{
+		return Redirect::guest( URL::route('account.login') );
+	}
+	
+	if (Auth::user()->role != 1) // 1 - admin
+	{
+
+		return Redirect::guest( URL::route('home') )->with('global', 'Only for administrators');
+
+	}
+
+});
