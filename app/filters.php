@@ -102,7 +102,7 @@ Route::filter('admin.auth', function ()
 		return Redirect::guest( URL::route('account.login') );
 	}
 	
-	if (Auth::user()->role != 1) // 1 - admin
+	if (!AdminController::isAdmin())
 	{
 		return Redirect::guest( URL::route('home') )->with('global', 'Only for administrators');
 	}

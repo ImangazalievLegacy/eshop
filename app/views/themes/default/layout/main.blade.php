@@ -13,6 +13,8 @@
 
 	@endif
 
+	@include('themes.default.layout.navigation')
+
 	@yield('content')
 
 </body>

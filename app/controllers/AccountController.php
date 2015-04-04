@@ -145,4 +145,105 @@ class AccountController extends BaseController {
 
 	}
 
+	public function getForgotPassword()
+	{
+		return View::make('themes.default.account.forgot-password');
+	}
+
+	public function postForgotPassword()
+	{
+		$data = Input::all();
+
+		$rules = array(
+			'email' => 'required|max:50|email',
+		);
+
+		$validator = Validator::make($data, $rules);
+
+		if ($validator->fails()) 
+		{
+			return Redirect::route('account.forgot.password')
+				->withErrors($validator)
+				->withInput($data);
+		}
+		else
+		{
+
+			$user = User::where('email', '=', Input::get('email'));
+
+			if ($user->count())
+			{
+				$user = $user->first();
+
+				$code = str_random(32);
+
+				$user->hash = $code;
+
+				if ($user->save())
+				{
+					
+					Mail::send('emails.auth.reset-password', array('username' => $user->username, 'link' => URL::route('account.password.reset', $code)), function($message) use ($user) {
+
+						$message->to($user->email, $user->username)->subject('Password reset');
+				
+					});
+
+					return Redirect::route('home')->with('global', 'We have sent you instruction by email.');
+
+				}
+			}
+
+		}
+
+		return Redirect::route('account.forgot.password')->with('global', 'Could not request new password');
+	}
+
+	public function getResetPassword($code)
+	{
+		return View::make('themes.default.account.reset-password')
+			->with('code', $code);
+	}
+
+	public function postResetPassword()
+	{
+
+		$data = Input::all();
+
+		$rules = array(
+			'password'  => 'required|min:6'
+		);
+
+		$validator = Validator::make($data, $rules);
+
+		if ($validator->fails()) 
+		{
+			return Redirect::route('account.password.reset')
+				->withErrors($validator)
+				->withInput($data);
+		}
+
+		$code = Input::get('code');
+		$password = Input::get('password');
+
+		$user = User::where('hash', '=', $code);
+
+		if ($user->count())
+		{
+			$user = $user->first();
+
+			$user->password = Hash::make($password);
+			$user->hash     = '';
+
+			if ($user->save())
+			{
+				return Redirect::route('home')
+					->with('global', 'Your password has been changed and you can sign in with your new password.');
+			}
+		}
+
+		return Redirect::route('account.password.reset')
+			->with('global', 'Your password could no be change');
+
+	}
+
 }

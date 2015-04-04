@@ -1,8 +1,8 @@
 <?php
 
-/**
- * Паттерны параметров роутов
- */
+/*
+* Паттерны параметров роутов
+*/
 Route::pattern('id', '[0-9]+');
 Route::pattern('hash', '[a-z0-9]+');
 Route::pattern('hex', '[a-f0-9]+');
@@ -57,6 +57,20 @@ Route::group(array('prefix' => 'account'), function()
 
 		))->where('code', '[a-zA-Z0-9]+');
 
+		Route::get('forgot-password', array(
+
+			'as' => 'account.forgot.password',
+			'uses' => 'AccountController@getForgotPassword'
+
+		));
+
+		Route::get('password/reset/{code}', array(
+
+			'as' => 'account.password.reset',
+			'uses' => 'AccountController@getResetPassword'
+
+		));
+
 		Route::group(array('before' => 'csrf'), function(){
 
 			Route::post('create', array(
@@ -72,6 +86,22 @@ Route::group(array('prefix' => 'account'), function()
 				'uses' => 'AccountController@postLogin'
 
 			));
+
+			Route::post('forgot-password', array(
+
+				'as' => 'account.forgot.password-post',
+				'uses' => 'AccountController@postForgotPassword'
+
+			));
+
+			Route::post('password/reset', array(
+
+				'as' => 'account.password.reset-post',
+				'uses' => 'AccountController@postResetPassword'
+
+			));
+
+			
 
 		});
 
@@ -101,6 +131,18 @@ Route::group(array('prefix' => 'admin', 'before' => 'admin.auth'), function()
 
 		'as' => 'admin.index',
 		'uses' => 'AdminController@getIndex'
+
+	));
+
+});
+
+Route::group(array('prefix' => 'category'), function()
+{
+
+	Route::get('/{url}', array(
+
+		'as' => 'category-index',
+		'uses' => 'CategoryController@getIndex'
 
 	));
 

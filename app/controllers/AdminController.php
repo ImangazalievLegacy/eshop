@@ -7,4 +7,9 @@ class AdminController extends BaseController {
 		return View::make('themes.default.admin.index');
 	}
 
+	public static function isAdmin()
+	{
+		return Auth::user()->role == 1; // 1 - admin
+	}
+
 }
