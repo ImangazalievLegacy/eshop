@@ -23,9 +23,51 @@ class Category extends Eloquent {
 		return Category::allNodes();
 	}
 
-	public static function getSubcategories()
+	public static function getByPath($path, $delimiter = '/')
+	{	
+		$categories = Category::getAll();
+
+		$segments = explode($delimiter, $path);
+
+		$level = 0;
+
+		$result = null;
+
+		$categoriesNum = count($categories);
+
+		for ($i=1; $i < $categoriesNum; $i++) { 
+
+		 	$category = $categories[$i];
+
+			if ($category->level == $level+1)
+			{
+
+				if ($category->url == $segments[$level])
+				{
+					$level++;
+
+					if ($category->level == count($segments))
+					{
+						$result = $category;
+						break;
+					}
+				}
+
+			}
+
+		}
+
+		return $result;
+	}
+
+	public static function getByRange($leftKey, $rightKey)
 	{
-		return Category::childNodes();
+		return Category::orderBy('left_key')->where('left_key', '>=', $leftKey)->where('right_key', '<=', $rightKey)->get();
+	}
+
+	public function getSubcategories()
+	{
+		return $this->childNodes();
 	}
 
 	public function addSubcategory($title, $url)

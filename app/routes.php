@@ -136,14 +136,21 @@ Route::group(array('prefix' => 'admin', 'before' => 'admin.auth'), function()
 
 });
 
-Route::group(array('prefix' => 'category'), function()
+Route::group(array('prefix' => 'catalog'), function()
 {
 
-	Route::get('/{url}', array(
+	Route::get('/', array(
 
-		'as' => 'category-index',
-		'uses' => 'CategoryController@getIndex'
+		'as' => 'catalog.index',
+		'uses' => 'CatalogController@getIndex'
 
 	));
+
+	Route::get('/{url?}', array(
+
+		'as' => 'catalog.category',
+		'uses' => 'CatalogController@getCategoryIndex'
+
+	))->where('url', '.*');
 
 });

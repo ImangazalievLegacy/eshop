@@ -19,12 +19,13 @@ class CreateProductsTable extends Migration {
 			$table->string('title', 256); // название товара
 			$table->text('description'); // описание товара
 
+			$table->string('url'); // URL товара (ЧПУ)
+			$table->integer('category_id'); // идентификатор категории товара
+
 			$table->integer('price'); // цена товара
 			$table->integer('old_price'); // старая цена товара
 
-			$table->string('url'); // URL товара (ЧПУ)
-
-			$table->string('part_number', 32); // артикул товара
+			$table->string('article_number', 32); // артикул товара
 			$table->string('currency', 16); // валюта, в которой указана цена товара
 
 			$table->timestamps();

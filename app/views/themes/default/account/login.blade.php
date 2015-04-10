@@ -25,5 +25,7 @@
 
 		<br><input type="submit" value="Sign in">
 	</form>
+	<br>
+	<a href="{{ URL::route('account.forgot.password') }}">Forgot password?</a>
 
 @stop

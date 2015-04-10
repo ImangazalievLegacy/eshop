@@ -16,6 +16,18 @@ class Product extends Eloquent {
 	 */
 	protected $hidden = array();
 
-	protected $fillable = array('title', 'description', 'price', 'old_price', 'url', 'part_number', 'currency');
+	protected $fillable = array('title', 'description', 'price', 'old_price', 'url', 'category_id', 'article_number', 'currency');
+
+	public static function getByCategory($id)
+	{
+		if (is_array($id))
+		{
+			return Product::whereIn('category_id', $id)->get();
+		}
+		else
+		{
+			return Product::where('category_id', '=', $id)->get();
+		}
+	}
 
 }
