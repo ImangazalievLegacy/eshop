@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration {
 			$table->string('title', 256); // название товара
 			$table->text('description'); // описание товара
 
-			$table->string('url'); // URL товара (ЧПУ)
+			$table->string('url', 512); // URL товара (ЧПУ)
 			$table->integer('category_id'); // идентификатор категории товара
 
 			$table->integer('price'); // цена товара

@@ -6,7 +6,7 @@
 	<link rel="stylesheet" href="{{ URL::to('css/main.css') }}">
 </head>
 <body>
-
+	
 	@if (Session::has('global'))
 
 		<p>{{ Session::get('global') }}</p>

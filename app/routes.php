@@ -134,6 +134,64 @@ Route::group(array('prefix' => 'admin', 'before' => 'admin.auth'), function()
 
 	));
 
+	Route::group(array('prefix' => 'products'), function()
+	{
+
+		Route::get('/', array(
+
+			'as' => 'admin.products.index',
+			'uses' => 'AdminController@getProductsIndex'
+
+		));
+
+	});
+
+});
+
+Route::group(array('prefix' => 'products', 'before' => 'admin.auth'), function()
+{
+
+	Route::get('add', array(
+
+		'as' => 'products.add',
+		'uses' => 'AdminController@getAddProduct'
+
+	));
+
+	Route::group(array('before' => 'csrf'), function(){
+
+		Route::post('add', array(
+
+			'as' => 'products.add-post',
+			'uses' => 'ProductController@postAddProduct'
+
+		));
+
+	});
+
+});
+
+Route::group(array('prefix' => 'categories', 'before' => 'admin.auth'), function()
+{
+
+	Route::get('add', array(
+
+		'as' => 'category.add',
+		'uses' => 'AdminController@getAddCategory'
+
+	));
+
+	Route::group(array('before' => 'csrf'), function(){
+
+		Route::post('add', array(
+
+			'as' => 'category.add-post',
+			'uses' => 'CatalogController@postAddCategory'
+
+		));
+
+	});
+
 });
 
 Route::group(array('prefix' => 'catalog'), function()
@@ -152,5 +210,36 @@ Route::group(array('prefix' => 'catalog'), function()
 		'uses' => 'CatalogController@getCategoryIndex'
 
 	))->where('url', '.*');
+
+});
+
+Route::group(array('prefix' => 'item'), function()
+{
+
+	Route::get('/', array(
+
+		'as' => 'products.index',
+		'uses' => 'ProductController@getIndex'
+
+	));
+
+	Route::get('/{url}', array(
+
+		'as' => 'product.show',
+		'uses' => 'ProductController@getShowProduct'
+
+	));
+
+});
+
+Route::group(array('prefix' => 'cart'), function()
+{
+
+	Route::get('/', array(
+
+		'as' => 'products.index',
+		'uses' => 'CartController@getIndex'
+
+	));
 
 });

@@ -30,4 +30,9 @@ class Product extends Eloquent {
 		}
 	}
 
+	public static function getByUrl($url)
+	{
+		return Product::where('url', '=', $url)->get();
+	}
+
 }
