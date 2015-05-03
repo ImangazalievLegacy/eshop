@@ -50,7 +50,15 @@
 
 		<br>Currency:<br>
 		<select name="currency">
-			<option value="rub">RUB</option>
+			@if(isset($currencies) && count($currencies)>0)
+
+					@foreach ($currencies as $currency)
+
+						<option value="{{ $currency->code }}">{{ $currency->title }}</option>
+
+					@endforeach
+
+			@endif
 		</select>
 		@if ( $errors->has('currency') )
 			{{ $errors->first('currency') }}

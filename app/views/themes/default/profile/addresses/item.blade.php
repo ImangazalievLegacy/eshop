@@ -1,0 +1,1 @@
+<h3>ФИО: </h3>{{ $address->full_name }}

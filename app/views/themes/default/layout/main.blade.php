@@ -6,6 +6,8 @@
 	<link rel="stylesheet" href="{{ URL::to('css/main.css') }}">
 </head>
 <body>
+
+	<h1>Shop</h1>
 	
 	@if (Session::has('global'))
 
@@ -13,9 +15,13 @@
 
 	@endif
 
-	@include('themes.default.layout.navigation')
+	<div class="nav">
+		@include('themes.default.layout.navigation')
+	</div>
 
-	@yield('content')
+	<div class="content">
+		@yield('content')
+	</div>
 
 </body>
 </html>

@@ -9,8 +9,6 @@ class ProductController extends BaseController {
 
 	public function getShowProduct($productUrl)
 	{
-
-			
 		$product = Product::getByUrl($productUrl);
 
 		if ($product == null)
@@ -28,7 +26,7 @@ class ProductController extends BaseController {
 
 		$data = Input::all();
 
-		$currencies = array('rub', 'usd', 'eur');
+		$currencies = Currency::getCodes();
 
 		$currencies = implode(',', $currencies);
 
@@ -40,7 +38,7 @@ class ProductController extends BaseController {
 			'category_id'    => 'required',
 			'price'          => 'required|numeric',
 			'old_price'      => 'numeric',
-			'article_number' => '',
+			'article_number' => 'required',
 			'currency'       => 'required|in:' . $currencies,
 
 		);

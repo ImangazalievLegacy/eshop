@@ -246,4 +246,77 @@ class AccountController extends BaseController {
 
 	}
 
+	public function getResendCode()
+	{
+		return View::make('themes.default.account.resend-activation-code');
+	}
+
+	public function postResendCode()
+	{
+
+		if (Session::has('last_email_time'))
+		{
+
+			list($ms, $seconds) = explode(' ', microtime());
+
+			$diff = $seconds - Session::get('last_email_time');
+
+			if ($diff < 60*5) // 5 минут
+			{
+
+				return Redirect::back()->with('global', 'You have reached the limit. Please try again later');
+
+			}
+
+		}
+
+		$data = Input::all();
+
+		$rules = array(
+
+			'email' => 'required|max:50|email',
+
+		);
+
+		$validator = Validator::make($data, $rules);
+
+		if ($validator->fails()) 
+		{
+			return Redirect::route('resend.activation.code')->withErrors($validator)->withInput($data);
+		}
+		else
+		{
+
+			$email = Input::get('email');
+
+			$user = User::where('email', '=', $email)->where('active', '=', 0);
+
+			if ($user->count())
+			{
+				$user = $user->first();
+
+				$activationCode = str_random(32);
+
+				$user->hash = $activationCode;
+
+				Mail::send('emails.auth.reset-password', array('username' => $user->username, 'link' => URL::route('account.password.reset', $code)), function($message) use ($user) {
+
+					$message->to($user->email, $user->username)->subject('Activate your account');
+				
+				});
+
+				list($ms, $seconds) = explode(' ', microtime());
+				Session::put('last_email_time', $seconds);
+
+				if ($user->save())
+				{
+					return Redirect::route('home')->with('global', 'We have sent you an email to activate your account');
+				}
+			}
+
+		}
+
+		return Redirect::route('resend.activation.code')->with('global', 'Could not resend activation code');
+	}
+
 }

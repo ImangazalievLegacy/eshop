@@ -71,6 +71,14 @@ Route::group(array('prefix' => 'account'), function()
 
 		));
 
+		Route::get('resend-activation-code', array(
+
+			'as' => 'resend.activation.code',
+			'uses' => 'AccountController@getResendCode'
+
+		));
+
+
 		Route::group(array('before' => 'csrf'), function(){
 
 			Route::post('create', array(
@@ -101,7 +109,12 @@ Route::group(array('prefix' => 'account'), function()
 
 			));
 
-			
+			Route::post('resend-activation-code', array(
+
+				'as' => 'resend.activation.code-post',
+				'uses' => 'AccountController@postResendCode'
+
+			));
 
 		});
 
@@ -237,9 +250,70 @@ Route::group(array('prefix' => 'cart'), function()
 
 	Route::get('/', array(
 
-		'as' => 'products.index',
+		'as' => 'cart.index',
 		'uses' => 'CartController@getIndex'
 
 	));
+
+	Route::post('/add', array(
+
+		'as' => 'cart.add',
+		'uses' => 'CartController@postAddProduct'
+
+	));
+
+	Route::post('/delete', array(
+
+		'as' => 'cart.delete',
+		'uses' => 'CartController@postDeleteProduct'
+
+	));
+
+});
+
+Route::group(array('prefix' => 'order'), function()
+{
+
+	Route::get('/', array(
+
+		'as' => 'order.make',
+		'uses' => 'OrderController@getIndex'
+
+	));
+
+	Route::group(array('before' => 'csrf'), function(){
+
+		Route::post('make', array(
+
+			'as' => 'order.make-post',
+			'uses' => 'OrderController@postMakeOrder'
+
+		));
+
+	});
+
+});
+
+Route::group(array('prefix' => 'profile'), function()
+{
+
+	Route::get('/', array(
+
+		'as' => 'profile.index',
+		'uses' => 'ProfileController@getIndex'
+
+	));
+
+	Route::group(array('prefix' => 'addresses'), function()
+	{
+
+		Route::get('/', array(
+
+			'as' => 'address.list',
+			'uses' => 'ProfileController@getAddressList'
+
+		));
+
+	});
 
 });

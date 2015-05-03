@@ -9,19 +9,15 @@ class ProductsSeeder extends Seeder {
 	 */
 	public function run()
 	{
-		$faker = Faker\Factory::create();
-
 		Product::truncate();
+		
+		$faker = Faker\Factory::create();
 
 		$minCategoryId = Category::take(1)->get()->first()->id;
 		$maxCategoryId = Category::orderBy('id', 'desc')->take(1)->get()->first()->id;
 
-		// $currencies = array('RUB', 'EUR', 'JPY');
-
-		// $currencyKey = array_rand($currencies);
-		// $currency = $currencies[$currencyKey];
-
-		$currency = 'RUB';
+		$currencies = Currency::getCodes();
+		$currency   = array_rand($currencies);
 
 		for ($i=0; $i < 15; $i++)
 		{ 

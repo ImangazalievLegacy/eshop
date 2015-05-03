@@ -148,4 +148,9 @@ class Category extends Eloquent {
 		return Category::orderBy('left_key')->where('right_key', '>', $this->left_key)->where('left_key', '<', $this->right_key)->get();
 	}
 
+	public function childrenCount()
+	{
+		return ($this->right_key - $this->left_key - 1)/2;
+	}
+
 }

@@ -12,6 +12,8 @@ class DatabaseSeeder extends Seeder {
 		Eloquent::unguard();
 
 		$this->call('ProductsSeeder');
+		$this->call('CurrenciesSeeder');
+		$this->call('ShippingSeeder');
 	}
 
 }

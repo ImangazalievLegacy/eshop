@@ -83,8 +83,6 @@ class CatalogController extends BaseController {
 
 			));
 
-			dd($parentCategory->toArray());
-
 			return Redirect::route('category.add')->with('global', 'Category added');
 		}
 

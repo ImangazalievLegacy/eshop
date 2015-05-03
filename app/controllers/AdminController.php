@@ -19,7 +19,9 @@ class AdminController extends BaseController {
 
 	public function getAddProduct()
 	{
-		return View::make('themes.default.admin.catalog.product.add');
+		$currencies = Currency::all();
+
+		return View::make('themes.default.admin.catalog.product.add')->with('currencies', $currencies);
 	}
 
 	public function getAddCategory()
